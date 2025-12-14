@@ -1354,9 +1354,9 @@ def inject_css() -> None:
         [data-testid="stChatInput"] {
             position: fixed;
             bottom: 0;
-            left: 58%;
+            left: 50%;
             transform: translateX(-50%);
-            width: min(720px, 58vw);
+            width: min(860px, 92vw);
             z-index: 20;
             background: #0b1220;
             padding: 0.75rem 1rem 1rem;
