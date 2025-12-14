@@ -1350,13 +1350,22 @@ def inject_css() -> None:
             font-size: 1rem;
             color: #111827 !important;
         }
-        /* Chat input fixo no rodapé */
+        /* Chat input fixo, alinhado ao centro do conteúdo */
         [data-testid="stChatInput"] {
-            position: sticky;
+            position: fixed;
             bottom: 0;
+            left: 58%;
+            transform: translateX(-50%);
+            width: min(720px, 58vw);
             z-index: 20;
             background: #0b1220;
-            padding-bottom: 0.5rem;
+            padding: 0.75rem 1rem 1rem;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.35);
+            border-radius: 12px 12px 0 0;
+        }
+        /* reserva espaço para o input fixo */
+        .block-container {
+            padding-bottom: 9rem;
         }
     </style>
     """
