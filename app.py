@@ -1350,6 +1350,14 @@ def inject_css() -> None:
             font-size: 1rem;
             color: #111827 !important;
         }
+        /* Chat input fixo no rodapé */
+        [data-testid="stChatInput"] {
+            position: sticky;
+            bottom: 0;
+            z-index: 20;
+            background: #0b1220;
+            padding-bottom: 0.5rem;
+        }
     </style>
     """
     st.markdown(hide, unsafe_allow_html=True)
@@ -1767,20 +1775,28 @@ def parse_ai_response(text: str):
         if "prompt" not in item or "answer" not in item:
             continue
         if item["type"] == "select" and "options" in item:
+            options = item["options"]
+            if not isinstance(options, list) or len(options) < 2:
+                continue
+            if item["answer"] not in options:
+                continue
             normalized.append(
                 {
                     "type": "select",
                     "prompt": item["prompt"],
-                    "options": item["options"],
+                    "options": options,
                     "answer": item["answer"],
                 }
             )
         elif item["type"] == "arrange" and "words" in item:
+            words = item["words"]
+            if not isinstance(words, list) or len(words) < 2:
+                continue
             normalized.append(
                 {
                     "type": "arrange",
                     "prompt": item["prompt"],
-                    "words": item["words"],
+                    "words": words,
                     "answer": item["answer"],
                 }
             )
@@ -1794,15 +1810,17 @@ def generate_magic_practice(lang: str):
         return
     profile = get_profile(lang)
     prompt = f"""
-    Gere 3 exercícios rápidos para alunos de {lang} no estilo Duolingo.
+    Gere 3 exercícios claros e completos para alunos de {lang} no estilo Duolingo.
     Use apenas os tipos "select" e "arrange".
-    Responda somente com JSON válido sem texto extra.
-    Estrutura:
+    Regras:
+    - "select": prompt deve ter contexto (pergunta ou frase com ___), 3 a 4 opções, e "answer" deve ser exatamente uma das opções.
+    - "arrange": prompt deve pedir para montar uma frase; "words" são as palavras embaralhadas; "answer" é a lista na ordem correta.
+    Retorne SOMENTE JSON válido, sem markdown ou texto extra, seguindo o formato:
     [
-      {{"type": "select", "prompt": "...", "options": ["A","B","C"], "answer": "A"}},
-      {{"type": "arrange", "prompt": "...", "words": ["palavra1","palavra2"], "answer": ["palavra1","palavra2"]}}
+      {{"type": "select", "prompt": "Complete: I ___ a teacher.", "options": ["am","is","are"], "answer": "am"}},
+      {{"type": "arrange", "prompt": "Monte: Eu estudo inglês à noite.", "words": ["estudo","Eu","noite","à","inglês"], "answer": ["Eu","estudo","inglês","à","noite"]}}
     ]
-    Priorize temas do nível atual e mantenha instruções curtas. O usuário tem {profile['xp']} XP.
+    Considere que o usuário tem {profile['xp']} XP para calibrar a dificuldade e traga instruções em uma frase completa.
     """
     with st.spinner("Gerando exercícios com Gemini..."):
         try:
