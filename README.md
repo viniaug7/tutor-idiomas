@@ -24,11 +24,30 @@ Para que o LingoTutor funcione corretamente, é necessário gerar uma **API Key 
 4. Guarde essa chave com segurança (ela será usada na configuração do app).
 
 ## Configuração da API (Gemini)
-- Defina a chave em uma destas opções (nessa ordem de preferência):
-  1) `st.secrets["GEMINI_API_KEY"]`
-  2) variável de ambiente `GEMINI_API_KEY`
-  3) campo "Gemini API Key" na sidebar
-- Modelo: por padrão tentamos `models/gemini-flash-latest` (override com `GEMINI_MODEL` se quiser outro).
+
+Após obter a API Key, configure-a no LingoTutor usando **uma das opções abaixo** (nessa ordem de preferência):
+
+1. **Streamlit Secrets**
+
+   ```python
+   st.secrets["GEMINI_API_KEY"]
+   ```
+
+2. **Variável de ambiente**
+
+   ```bash
+   export GEMINI_API_KEY="sua_api_key_aqui"
+   ```
+
+   (no Windows PowerShell)
+
+   ```powershell
+   setx GEMINI_API_KEY "sua_api_key_aqui"
+   ```
+
+3. **Campo na Sidebar do app**
+
+   * Cole a chave manualmente no campo **“Gemini API Key”** exibido na barra lateral.
 
 ## Como usar
 1) Abra o app, escolha idioma (Inglês/Espanhol) e clique em **Começar**.
