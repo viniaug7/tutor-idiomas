@@ -14,6 +14,15 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+## Como obter sua API Key do Gemini
+
+Para que o LingoTutor funcione corretamente, é necessário gerar uma **API Key do Google Gemini**:
+
+1. Acesse: [https://aistudio.google.com/app/api-keys](https://aistudio.google.com/app/api-keys)
+2. Clique em **Create API key** (Criar chave de API).
+3. Copie a **chave gerada**.
+4. Guarde essa chave com segurança (ela será usada na configuração do app).
+
 ## Configuração da API (Gemini)
 - Defina a chave em uma destas opções (nessa ordem de preferência):
   1) `st.secrets["GEMINI_API_KEY"]`
